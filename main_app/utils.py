@@ -82,6 +82,7 @@ class BuildAndTrain():
         df = df.drop(['phoneNo', 'id', 'availabilityPreference', 'aadharCard'],
                      axis=1)
         df.dropna(inplace=True)
+        print('DataUtility Done')
         return df
 
 ####################################UTILITY FUNCTIONS IMPLEMENTED######################################
@@ -198,6 +199,7 @@ class BuildAndTrain():
         self.sparser()
         self.pickler(self.classesOfColumns, 'clsofclos')
         self.pickler(self.occupations, 'occupations')
+        print("Utilites executed")
         return temp_df
 
 ################################GENERIC FUNCTIONS#####################################
@@ -224,12 +226,12 @@ class BuildAndTrain():
 
         for i in range(len(self.occupations.keys())):
             self.pickler(self.kmeans[i], str(i)+'_model')
-
+        print('Modelling done')
         return self.KmeanPredictor(service, userquery)
 
     def KmeanPredictor(self,service, userquery): # modelNos same as service
         kmeanModel = self.unpickleLoader(str(service) + '_model')
-
+        print('Predicting kmean cluster')
         return self.KMeanClusterIndexes(kmeanModel, kmeanModel.predict(np.array(userquery).reshape(1,-1)), userquery, service)
 
     def KMeanClusterIndexes(self, kMeanModel, userQueryClusterLabel, userquery, service):
@@ -240,6 +242,7 @@ class BuildAndTrain():
             if i == userQueryClusterLabel:
                 li.append(count)
             count = count+1
+        print('getting all points in the same cluster')
         return self.clusteredDataframe(li, service, userquery)
 
     def clusteredDataframe(self, clustEleIndex, service, userQuery):
@@ -247,9 +250,11 @@ class BuildAndTrain():
         temp_df = pd.read_csv(str(service) + '.csv')
         KMclustered_dataframe = temp_df.loc[clustEleIndex]
         temp_sparse = [temp_sparse[x] for x in clustEleIndex]
+        print('Temporary cluster formation')
         return self.NearestNeighborsAlgo(temp_sparse, userQuery,KMclustered_dataframe)
 
     def NearestNeighborsAlgo(self, clusteredSparse, userQuery, KMeanClusterIndexes):
         neigh = NearestNeighbors(n_neighbors=9)
         neigh.fit(clusteredSparse)
+        print('Applying nearest neighbour')
         return neigh.kneighbors(np.array(userQuery).reshape(1,-1)), KMeanClusterIndexes

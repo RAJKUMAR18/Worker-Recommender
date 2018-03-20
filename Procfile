@@ -1,1 +1,1 @@
-web: gunicorn gui_project.wsgi
+web: gunicorn -t 3000 gui_project.wsgi
