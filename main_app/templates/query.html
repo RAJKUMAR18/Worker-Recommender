@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block nav-query %}<strong class="nav-active">Query</strong>{% endblock %}
+{% block content %}
+<form method="post" action='/result/'>
+  {% csrf_token %}
+  {{ form }}
+  <input type="submit" value="Submit" />
+</form>
+  
+{% endblock %}
