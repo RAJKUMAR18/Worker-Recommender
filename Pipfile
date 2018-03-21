@@ -19,6 +19,9 @@ pandas = "*"
 numpy = "*"
 scipy = "*"
 sklearn = "*"
+whitenoise = "*"
+dj-database-url = "*"
+"psycopg2" = "*"
 
 
 [dev-packages]
