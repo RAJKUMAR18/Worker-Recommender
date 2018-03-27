@@ -75,6 +75,7 @@ class BuildAndTrain():
         # self.kneighborsOfUserQuery, self.finalCluster = self.KmeanPredictor('1', sparse1[116])
         self.classesOfColumns = self.unpickleLoader('clsofclos')
         self.occupations = self.unpickleLoader('occupations')
+
 #####################################DATA UTILITY ###################################################
 
     def dataUtility(self):
@@ -194,11 +195,11 @@ class BuildAndTrain():
     def utilities(self, temp_df):
         temp_df = self.classer(temp_df)
         temp_df = self.classes_maker(temp_df)
-        self.all_occupations_in_a_location(temp_df)
+        # self.all_occupations_in_a_location(temp_df)
         self.occs_splitter(temp_df)
         self.sparser()
-        self.pickler(self.classesOfColumns, 'clsofclos')
-        self.pickler(self.occupations, 'occupations')
+        # self.pickler(self.classesOfColumns, 'clsofclos')
+        # self.pickler(self.occupations, 'occupations')
         print("Utilites executed")
         return temp_df
 
@@ -223,9 +224,6 @@ class BuildAndTrain():
             kmodel = KMeans(max_iter=4,
                             n_clusters=10, n_init=10).fit(temp_files[i])
             self.kmeans.append(kmodel)
-
-        for i in range(len(self.occupations.keys())):
-            self.pickler(self.kmeans[i], str(i)+'_model')
         print('Modelling done')
         return self.KmeanPredictor(service, userquery)
 
@@ -241,7 +239,7 @@ class BuildAndTrain():
         for i in temp:
             if i == userQueryClusterLabel:
                 li.append(count)
-            count = count+1
+            count = count + 1
         print('getting all points in the same cluster')
         return self.clusteredDataframe(li, service, userquery)
 

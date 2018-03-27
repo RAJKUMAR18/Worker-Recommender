@@ -22,6 +22,9 @@ sklearn = "*"
 whitenoise = "*"
 dj-database-url = "*"
 "psycopg2" = "*"
+"psycopg2-binary" = "*"
+nltk = "*"
+twython = "*"
 
 
 [dev-packages]

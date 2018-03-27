@@ -1,11 +1,11 @@
 from django.shortcuts import render
-
 from django.http import HttpResponseRedirect
-
+from .models import ClientRatings, WorkerRatings
 import random
 
 from .utils import vectorizer, BuildAndTrain
 from .forms import Query
+from .collaborative import ClientRatesWorker, InitializeModel, WorkerRatesCLient
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
@@ -67,3 +67,14 @@ def result(request):
             return render(request, 'result.html', context=context)
         else:
             return render(request, 'result.html', context={'formerror':query_data.errors})
+
+def create_model_object(request):
+    temp = InitializeModel()
+    clientrates_list = ClientRatings.objects.all()
+    workerrates_list = WorkerRatings.objects.all()
+    context = {
+    'crates':clientrates_list,
+    'wrates':workerrates_list,
+    'len':len(clientrates_list),
+    }
+    return render(request,'db.html', context)
