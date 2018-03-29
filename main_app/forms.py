@@ -34,11 +34,11 @@ class Query(forms.Form):
     REF = [False,  True]
     REFER = [(x,y) for x,y in zip(range(len(REF)),REF)]
 
-    name = forms.CharField(max_length=12)
-    mob_number = forms.IntegerField(min_value=7000000000, max_value=9999999999)
-    location = forms.ChoiceField(choices=LOCATIONS)
-    service = forms.ChoiceField(choices=OCCUPATIONS)
-    doorstep_service =forms.ChoiceField(choices=DOORSTEP, widget=forms.RadioSelect())
+    name = forms.CharField(max_length=12, widget=forms.TextInput(attrs={'class':'form-control'}))
+    mob_number = forms.CharField(min_length=10,max_length=10, widget=forms.TextInput(attrs={'class':'form-control'}))
+    location = forms.ChoiceField(choices=LOCATIONS,widget=forms.Select(attrs={'class' : 'dropdown'}))
+    service = forms.ChoiceField(choices=OCCUPATIONS,widget=forms.Select(attrs={'class' : 'dropdown'}))
+    doorstep_service =forms.ChoiceField(choices=DOORSTEP, widget=forms.RadioSelect(attrs={'class': 'radio-inline'}))
     age_prefernce = forms.ChoiceField(choices=AGES, widget=forms.RadioSelect())
     availability = forms.ChoiceField(choices=AVAIL, widget=forms.RadioSelect(),
     required=False)

@@ -1,22 +1,15 @@
 {% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Query</title>
-    <link rel="stylesheet" href="{% static 'main_app/query.css' %}">
-  </head>
-  <body>
-    {% block nav-query %}<strong class="nav-active">Query</strong>{% endblock %}
-    <div class="cool-padding">
-    {% block content %}
-    <form method="post" action='/result/'>
-      {% csrf_token %}
-      {{ form }}
-      <input type="submit" value="Submit" />
-    </form>
-    {% endblock %}
-    </div>
-  </body>
-</html>
+<head>
+  <meta charset="utf-8">
+  <title>Query</title>
+</head>
+<body>
+  {% block content %}
+  <form method="post" action='/result/'>
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+  </form>
+  {% endblock %}
+</body>

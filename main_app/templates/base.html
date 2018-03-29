@@ -4,25 +4,33 @@
   <head>
     <meta charset="utf-8">
     <title>Recommendation</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'main_app/main.css' %}">
+
   </head>
   <body>
+    <script type="text/javascript" src="{% static 'main_app/js/bootstrap.min.js' %}"></script>
     <div class="sexy">
-    {% block css%}
-
+    {% block extrastyle%}
+      <link rel="stylesheet" type="text/css" href="{% static 'main_app/css/bootstrap.min.css' %}">
     {% endblock%}
     {% block nav %}
-      <ul id='nav'>
-        <li>{% block nav-help %} <a href="{% url 'help' %}">Help</a> {% endblock %}</li>
-        <li>{% block nav-index %} <a href="{% url 'index' %}">Home</a> {% endblock %}</li>
-        <li>{% block nav-query %} <a href="{% url 'query' %}">Query</a> {% endblock %}</li>
-      </ul>
+      <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="{% url 'index' %}">Recommender</a>
+          </div>
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'help' %}">Help</a></li>
+            <li><a href="{% url 'query' %}">Query</a></li>
+          </ul>
+        </div>
+      </nav>
     {% endblock %}
     </div>
-    <div class="sexy-color">
-    {% block content %}
 
-    {% endblock %}
-    </div>
+  {% block content %}
+
+  {% endblock %}
+
   </body>
 </html>
