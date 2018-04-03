@@ -27,6 +27,7 @@ nltk = "*"
 twython = "*"
 python-decouple = "*"
 pathlib = "*"
+Pipfile = "*"
 
 
 [dev-packages]
