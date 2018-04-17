@@ -1,11 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from .models import ClientRatings, WorkerRatings
 import random
 
 from .utils import vectorizer, BuildAndTrain
 from .forms import Query
-from .collaborative import ClientRatesWorker, InitializeModel, WorkerRatesCLient
+
 # Create your views here.
 def index(request):
     return render(request, 'index.html')

@@ -256,3 +256,18 @@ class BuildAndTrain():
         neigh.fit(clusteredSparse)
         print('Applying nearest neighbour')
         return neigh.kneighbors(np.array(userQuery).reshape(1,-1)), KMeanClusterIndexes
+
+kmeans = []
+if __name__ == '__main__':
+    bnt = BuildAndTrain()
+
+    df = bnt.dataUtility()
+    classesOfColumns = defaultdict(list)
+    occupations = defaultdict(list)
+
+#     pickler(classesOfColumns, 'clsofclos')
+#     pickler(occupations, 'occupations')
+    df = bnt.utilities(df)
+    sparse1 = bnt.unpickleLoader('1_sparse')
+    kneighborsOfUserQuery, finalCluster = bnt.modelling('1', sparse1[116])
+    print(kneighborsOfUserQuery, finalCluster)
