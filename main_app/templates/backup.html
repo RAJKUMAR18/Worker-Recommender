@@ -1,0 +1,61 @@
+<head>
+  <meta charset="utf-8">
+  <title>Query</title>
+</head>
+{# <body>
+  {% block content %}
+  <form method="post" action='/result/' class="w3-container w3-light-grey" >
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+  </form>
+  {% endblock %}
+</body> #}
+<div>
+
+{#
+<form method="post" novalidate>
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  {{ form.source.errors }}
+  {{ form.source }}
+
+  {% for hidden_field in form.hidden_fields %}
+    {{ hidden_field.errors }}
+    {{ hidden_field }}
+  {% endfor %}
+
+    {% for field in form.visible_fields %}
+      <div class="form-group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field| add_class:'form-control' }}
+
+        {% for error in field_errors %}
+          <span class="help-block">{{ error }}</span>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </table>
+  <button type="submit">Submit</button>
+</form> #}
+
+  <form method="post">
+    {% csrf_token %}
+    for inputs in form.visible_fields():
+      print(inputs)
+  </form>
+</div>
+
+---------------------------------------------------------------------
+<div class="w3-container w3-center">
+  <form method="post" >
+    {% csrf_token %}
+      {% for field in form %}
+          <div class="w3-container w3-panel special">
+            <label for="{{ field.id_for_label }}" class="w3-text-blue" style="font-family: sans-serif;"><b>{{ field.label }}</b></label>
+            {{ field }}
+          </div>
+      {% endfor %}
+    <button type="submit" class="">Submit</button>
+  </form>
+</div>

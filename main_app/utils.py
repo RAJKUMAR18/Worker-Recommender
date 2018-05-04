@@ -64,6 +64,7 @@ def vectorizer(columnsValues):
     return list(vector)
 
 
+
 class BuildAndTrain():
 
     def __init__(self):
@@ -76,7 +77,7 @@ class BuildAndTrain():
         self.classesOfColumns = self.unpickleLoader('clsofclos')
         self.occupations = self.unpickleLoader('occupations')
 
-#####################################DATA UTILITY ###################################################
+##################################### DATA UTILITY ###################################################
 
     def dataUtility(self):
         df = pd.read_csv('final_data.csv')
@@ -86,7 +87,7 @@ class BuildAndTrain():
         print('DataUtility Done')
         return df
 
-####################################UTILITY FUNCTIONS IMPLEMENTED######################################
+#################################### UTILITY FUNCTIONS IMPLEMENTED######################################
 
     def classer(self, temp_df):
     # np.logical_and(df[:]['Location'] == 30, df[:]['Occupation'] ==2).nonzero()[0].tolist()
@@ -102,18 +103,16 @@ class BuildAndTrain():
         temp_df.loc[temp_df['age']<21,'age'] = 0
         temp_df.loc[np.logical_and(temp_df['age']>20, temp_df['age']<26),'age'] = 1
         temp_df.loc[np.logical_and(temp_df['age']>25, temp_df['age']<30),'age'] = 2
-        temp_df.loc[np.logical_and(temp_df['age']>29, temp_df['age']<40),'age'] = 3
+        temp_df.loc[np.logical_and(temp_df['age']>29, temp_df['age']<41),'age'] = 3
 
-        temp_df.loc[temp_df['clientsAttended']<40, 'clientsAttended'] = 0
-        temp_df.loc[np.logical_and(temp_df['clientsAttended']>10, temp_df['clientsAttended']<20),'clientsAttended'] = 1
-        temp_df.loc[np.logical_and(temp_df['clientsAttended']>20, temp_df['clientsAttended']<30),'clientsAttended'] = 2
-        temp_df.loc[np.logical_and(temp_df['clientsAttended']>30, temp_df['clientsAttended']<40),'clientsAttended'] = 3
+        temp_df.loc[temp_df['clientsAttended']<11, 'clientsAttended'] = 0
+        temp_df.loc[np.logical_and(temp_df['clientsAttended']>10, temp_df['clientsAttended']<21),'clientsAttended'] = 1
+        temp_df.loc[np.logical_and(temp_df['clientsAttended']>20, temp_df['clientsAttended']<31),'clientsAttended'] = 2
+        temp_df.loc[np.logical_and(temp_df['clientsAttended']>30, temp_df['clientsAttended']<41),'clientsAttended'] = 3
         temp_df.loc[temp_df['clientsAttended']>40, 'clientsAttended'] = 4
         return temp_df
 
     def classes_maker(self,temp_df):
-        temp = temp_df.columns.tolist()
-        # temp.remove('age')
         for i in temp_df.columns:
             le = preprocessing.LabelEncoder()
             le.fit(temp_df[i])
@@ -183,7 +182,7 @@ class BuildAndTrain():
                 vector.extend(types)
                 vector.extend(availability)
                 vector.extend(minimumWage)
-                vector.extend(exp)
+                # vector.extend(exp)
                 vector.extend(clients)
                 vector.extend(doorstepService)
                 vector.extend(references)
@@ -252,22 +251,22 @@ class BuildAndTrain():
         return self.NearestNeighborsAlgo(temp_sparse, userQuery,KMclustered_dataframe)
 
     def NearestNeighborsAlgo(self, clusteredSparse, userQuery, KMeanClusterIndexes):
-        neigh = NearestNeighbors(n_neighbors=9)
+        neigh = NearestNeighbors(n_neighbors=15)
         neigh.fit(clusteredSparse)
         print('Applying nearest neighbour')
         return neigh.kneighbors(np.array(userQuery).reshape(1,-1)), KMeanClusterIndexes
 
-kmeans = []
-if __name__ == '__main__':
-    bnt = BuildAndTrain()
+# kmeans = []
+# if __name__ == '__main__':
+#     bnt = BuildAndTrain()
 
-    df = bnt.dataUtility()
-    classesOfColumns = defaultdict(list)
-    occupations = defaultdict(list)
+#     df = bnt.dataUtility()
+#     classesOfColumns = defaultdict(list)
+#     occupations = defaultdict(list)
 
-#     pickler(classesOfColumns, 'clsofclos')
-#     pickler(occupations, 'occupations')
-    df = bnt.utilities(df)
-    sparse1 = bnt.unpickleLoader('1_sparse')
-    kneighborsOfUserQuery, finalCluster = bnt.modelling('1', sparse1[116])
-    print(kneighborsOfUserQuery, finalCluster)
+# #     pickler(classesOfColumns, 'clsofclos')
+# #     pickler(occupations, 'occupations')
+#     df = bnt.utilities(df)
+#     # sparse1 = bnt.unpickleLoader('1_sparse')
+#     kneighborsOfUserQuery, finalCluster = bnt.modelling('1', sparse1[116])
+#     print(kneighborsOfUserQuery, finalCluster)

@@ -3,34 +3,45 @@
 <html>
   <head>
     <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Recommendation</title>
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   </head>
   <body>
-    <script type="text/javascript" src="{% static 'main_app/js/bootstrap.min.js' %}"></script>
-    <div class="sexy">
-    {% block extrastyle%}
-      <link rel="stylesheet" type="text/css" href="{% static 'main_app/css/bootstrap.min.css' %}">
-    {% endblock%}
     {% block nav %}
-      <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="{% url 'index' %}">Recommender</a>
-          </div>
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="{% url 'index' %}">Home</a></li>
-            <li><a href="{% url 'help' %}">Help</a></li>
-            <li><a href="{% url 'query' %}">Query</a></li>
-          </ul>
-        </div>
-      </nav>
+    <header>
+      <!-- <nav class="navbar navbar-expand-sm navbar-light" style="background-color:rgb(220, 233, 139)">
+        <ul class="navbar-nav " style="padding-right: 25%; padding-left:30%;">
+          <li classHome="nav-item active" style="padding-right: 20%">
+            <a class="nav-link" href="{% url 'index' %}">Home</a>
+          </li>
+          <li class="nav-item" style="padding-right: 20%; padding-left:30%;">
+            <a class="nav-link" href="{% url 'help' %}">Help</a>
+          </li>
+          <li class="nav-item" style="padding-right: 20%; padding-left:30%;">
+            <a class="nav-link" href="{% url 'query' %}">Query</a>
+          </li>
+        </ul>
+      </nav> -->
+      <div class="w3-bar w3-black w3-container w3-large">
+        <a class="w3-bar-item w3-button" href="{% url 'index' %}" style="width:33%">
+          <i class="fa fa-home"></i> Home</a>
+        <a class="w3-bar-item w3-button" href="{% url 'help' %}" style="width:33%">Help</a>
+        <a class="w3-bar-item w3-button" href="{% url 'query' %}" style="width:33%">
+          <i class="fa fa-search"></i> Query</a>
+      </div>
+    </header>
     {% endblock %}
-    </div>
 
   {% block content %}
 
   {% endblock %}
-
+  <footer class="w3-wide w3-container w3-teal w3-large" style="color: rgb(57, 83, 57); padding: 10px; text-align: center">
+    Made by Rajkumar Gosavi with <span class="fa fa-heart-o"></span>
+    <span class="fa fa-headphones"></span> and
+    <span class="fa fa-coffee"></span>
+  </footer>
   </body>
 </html>

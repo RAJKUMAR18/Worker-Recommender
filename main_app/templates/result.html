@@ -1,10 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 
-<head>
-  <link rel="stylesheet" href="{% static 'main_app/main.css' %}">
-</head>
-
 <h1>Result</h1>
 <h3>Your Query was:</h3>
 {% block content %}
@@ -19,15 +15,17 @@ Gender {{ gender }}<br/>
 Type {{ types }}<br/>
 availability {{ availability}}<br/>
 Wage Preference {{ wage_preference }}<br/>
-exprience {{ experience}}<br/>
+experience {{ experience }}<br/>
 clients_attended {{ clients_attended }}<br/>
 doorstep_service {{ doorstep_service }}<br/>
 refernence {{ reference}}<br/>
 liscenced {{ liscenced }}<br/>
 Shop_liscence {{ shopping_liscence }}<br/>
-{% for clusters in clusterDF  %}
-    <br>{{ clusters }}<br>
-{% endfor %}
+
+{% autoescape off %}
+    {{ clusterDF }}
+{% endautoescape %}
+
 <br>
 {{ formerror }}
 
