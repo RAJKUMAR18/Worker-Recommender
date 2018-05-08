@@ -1,17 +1,20 @@
-import pandas as pd
-import numpy as np
-# import matplotlib.pyplot as plt
-from collections import defaultdict
-from sklearn import preprocessing
-from scipy import sparse
-from operator import itemgetter
 # from scipy.spatial.distance import cosine
 import pickle
-# import seaborn
-from sklearn.neighbors import NearestNeighbors
-from sklearn.cluster import KMeans
+# import matplotlib.pyplot as plt
+from collections import defaultdict
 # import os
 from datetime import datetime
+from operator import itemgetter
+
+import numpy as np
+import pandas as pd
+from scipy import sparse
+from sklearn import preprocessing
+from sklearn.cluster import KMeans
+# import seaborn
+from sklearn.neighbors import NearestNeighbors
+
+
 def vectorizer(columnsValues):
     # location,service,certification,age_prefernce,gender,types,availability,
     #           wage_preference,exprience,clients_attended,doorstep_service,
@@ -68,11 +71,17 @@ class BuildAndTrain():
 
     def __init__(self):
         """Calls dataUtility utitlities functions"""
-        self.start_time = datetime.now()
+        # ---- Initializing variables ----
+        self.indexes = None
+        self.recommendedNeighbours = None
+        self.columns = None
+        self.labelObject = []
         self.df = self.dataUtility()
         self.classesOfColumns = defaultdict(list)
         self.occupations = defaultdict(list)
         self.kmeans = []
+        self.start_time = datetime.now()
+        # --- Calling methods and functions ---
         self.df = self.utilities(self.df)
         # print('utilities called!!')
         # self.kneighborsOfUserQuery, self.finalCluster = self.KmeanPredictor('1', sparse1[116])
@@ -127,11 +136,14 @@ class BuildAndTrain():
         """Label encoding for all non numeric data and returns new df"""
         temp = temp_df.columns.tolist()
         temp.remove('phoneNo')
+        self.columns = temp
+        print(self.columns)
         for i in temp:
             le = preprocessing.LabelEncoder()
             le.fit(temp_df[i])
             self.classesOfColumns[i].append(le.classes_)
             temp_df[i] = le.transform(temp_df[i])
+            self.labelObject.append(le)
         # print(temp_df.columns)
         return temp_df
     
@@ -217,7 +229,7 @@ class BuildAndTrain():
         """Calls multiple utilities and return the result dataframe"""
         # print('Executing utilities functions ....')
         # temp_df = self.classer(temp_df)
-        # temp_df = self.classes_maker(temp_df)
+        temp_df = self.classes_maker(temp_df)
         # self.all_occupations_in_a_location(temp_df)
         # self.occs_splitter(temp_df)
         # self.sparser()
@@ -265,16 +277,31 @@ class BuildAndTrain():
         KMclustered_dataframe = temp_df.loc[clustEleIndex]
         temp_sparse = [temp_sparse[x] for x in clustEleIndex]
         # print('Temporary cluster formation')
-        return self.NearestNeighborsAlgo(temp_sparse, userQuery,KMclustered_dataframe)
+        return self.NearestNeighborsAlgo(service, temp_sparse, userQuery,KMclustered_dataframe)
     
-    def NearestNeighborsAlgo(self, clusteredSparse, userQuery, KMeanClusterIndexes):
+    def NearestNeighborsAlgo(self, service, clusteredSparse, userQuery, KMeanClusterIndexes):
         """Apply KNN to the clustered dataframe"""
         neigh = NearestNeighbors(n_neighbors=15)
         neigh.fit(clusteredSparse)
         # print('Applying nearest neighbour')
         print("Total time: ", datetime.now() - self.start_time)
-        return neigh.kneighbors(np.array(userQuery).reshape(1,-1)), KMeanClusterIndexes
+        self.recommendedNeighbours = neigh.kneighbors(np.array(userQuery).reshape(1,-1))
+        self.indexes =  KMeanClusterIndexes
+        return self.finalPresentation(service)
 
+    def classDecoder(self, df):
+        """Decodes the normalized labels into original labels"""
+        print(len(self.columns), len(self.labelObject))
+        for le, col in zip(self.labelObject, self.columns):
+            df[col] = le.inverse_transform(df[col])
+        return df
+
+    def finalPresentation(self, service):
+        temp_df = pd.read_csv(str(service) + '.csv')
+        combined = temp_df.append(self.indexes.iloc[self.recommendedNeighbours[1][0]])
+        combined[~combined.index.duplicated(keep=False)]
+        final = self.indexes.iloc[self.recommendedNeighbours[1][0]].append(combined)
+        return self.classDecoder(final)
 
 # kmeans = []
 # if __name__ == '__main__':
