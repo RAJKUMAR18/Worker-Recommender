@@ -97,18 +97,18 @@ class BuildAndTrain():
     
     def pickler(self, toBeDumped, filename):
         """A helper function to pickle data"""
-        with open(str(filename) + '.pkl', 'wb') as file:
+        with open('resources/' + str(filename) + '.pkl', 'wb') as file:
             file.write(pickle.dumps(toBeDumped))
 
-    def unpickleLoader(self,filename):
+    def unpickleLoader(self, filename):
         """A helper function to unpickle data"""
-        with open(filename + '.pkl', 'rb') as f:
+        with open('resources/' + filename + '.pkl', 'rb') as f:
             unpickled = pickle.loads(f.read())
         return unpickled
     
     def dataUtility(self):
         """Reads the main input csv in a dataframe for computation"""
-        df = pd.read_csv('final_data.csv')
+        df = pd.read_csv('resources/final_data.csv')
         df = df.drop(['id', 'availabilityPreference', 'aadharCard'],
                      axis=1)
         df.dropna(inplace=True)
@@ -182,7 +182,7 @@ class BuildAndTrain():
         # print('Generating sparse matrix for data...')
         for i in range(len(self.occupations.keys())):
             sparse = []
-            temp_df = pd.read_csv(str(i)+'.csv')
+            temp_df = pd.read_csv('resources/' + str(i)+'.csv')
 
             for index, row in temp_df.iterrows():
                 vector           = []
@@ -235,7 +235,7 @@ class BuildAndTrain():
     
     def utilities(self, temp_df):
         """Calls multiple utilities and return the result dataframe"""
-        # print('Executing utilities functions ....')
+        print('Executing utilities functions ....')
         # temp_df = self.classer(temp_df)
         # temp_df = self.classes_maker(temp_df)
         # self.all_occupations_in_a_location(temp_df)
@@ -243,7 +243,7 @@ class BuildAndTrain():
         # self.sparser()
         # self.pickler(self.classesOfColumns, 'clsofclos')
         # self.pickler(self.occupations, 'occupations')
-        # print("Utilites executed")
+        print("Utilites executed")
         return temp_df
     
     def modelling(self, service, userquery):
@@ -255,7 +255,7 @@ class BuildAndTrain():
             kmodel = KMeans(max_iter=4,
                             n_clusters=10, n_init=10).fit(temp_files[i])
             self.kmeans.append(kmodel)
-            # self.pickler(kmodel, str(i) + '_model')
+            self.pickler(kmodel, str(i) + '_model')
         # print('Modelling done')
         return self.KmeanPredictor(service, userquery)
     
@@ -281,7 +281,7 @@ class BuildAndTrain():
     def clusteredDataframe(self, clustEleIndex, service, userQuery):
         """Process the data in the clustered dataframe"""
         temp_sparse = self.unpickleLoader(str(service) + '_sparse')
-        temp_df = pd.read_csv(str(service) + '.csv')
+        temp_df = pd.read_csv('resources/' + str(service) + '.csv')
         KMclustered_dataframe = temp_df.loc[clustEleIndex]
         temp_sparse = [temp_sparse[x] for x in clustEleIndex]
         # print('Temporary cluster formation')
@@ -306,7 +306,7 @@ class BuildAndTrain():
         return df
 
     def finalPresentation(self, service):
-        temp_df = pd.read_csv(str(service) + '.csv')
+        temp_df = pd.read_csv('resources/' + str(service) + '.csv')
         combined = temp_df.append(self.indexes.iloc[self.recommendedNeighbours[1][0]])
         combined[~combined.index.duplicated(keep=False)]
         final = self.indexes.iloc[self.recommendedNeighbours[1][0]].append(combined)
