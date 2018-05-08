@@ -55,15 +55,22 @@ def result(request):
             print('context generated')
             
             context = {
-                'name': name, 'mob_number': mob_number,
-                'location': location, 'service': service,
-                'certification': certification, 'types': types,
-                'age_prefernce': age_prefernce, 'gender': gender,
-                'availability': availability,
-                'wage_preference': wage_preference,
-                'experience': experience, 'clients_attended': clients_attended,
-                'doorstep_service': doorstep_service, 'reference': reference,
-                'liscenced': liscenced, 'shopping_liscence': shopping_liscence,
+                'name': name,
+                'mob_number': mob_number,
+                'location': location, # 2
+                'service': service, # 3
+                'certification': certification, # 4
+                'age_prefernce': age_prefernce, # 5
+                'gender': gender, # 6
+                'types': types, # 7        
+                'availability': availability, # 8
+                'wage_preference': wage_preference, # 9
+                'experience': experience, # 10
+                'clients_attended': clients_attended, # 11
+                'doorstep_service': doorstep_service, # 12
+                'reference': reference,# 13
+                'liscenced': liscenced, # 14 
+                'shopping_liscence': shopping_liscence,# 15
             }
 
             vectorized_user_query = vectorizer(list(context.values()))

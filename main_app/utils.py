@@ -1,5 +1,6 @@
 # from scipy.spatial.distance import cosine
 import pickle
+import warnings
 # import matplotlib.pyplot as plt
 from collections import defaultdict
 # import os
@@ -64,6 +65,8 @@ def vectorizer(columnsValues):
     vector.extend(references)
     vector.extend(liscenced)
     vector.extend(shoppingliscence)
+
+    print(len(vector), vector)
     return list(vector)
 
 
@@ -87,6 +90,8 @@ class BuildAndTrain():
         # self.kneighborsOfUserQuery, self.finalCluster = self.KmeanPredictor('1', sparse1[116])
         self.classesOfColumns = self.unpickleLoader('clsofclos')
         self.occupations = self.unpickleLoader('occupations')
+        self.labelObject = self.unpickleLoader('labelEncoders')
+        self.columns = self.unpickleLoader('finalColumns')
         # print(self.occupations.keys())
     
     
@@ -137,13 +142,16 @@ class BuildAndTrain():
         temp = temp_df.columns.tolist()
         temp.remove('phoneNo')
         self.columns = temp
-        print(self.columns)
+        # print(self.columns)
         for i in temp:
+            warnings.filterwarnings(action='ignore', category=DeprecationWarning)            
             le = preprocessing.LabelEncoder()
             le.fit(temp_df[i])
             self.classesOfColumns[i].append(le.classes_)
             temp_df[i] = le.transform(temp_df[i])
             self.labelObject.append(le)
+        self.pickler(self.labelObject, 'labelEncoders')
+        self.pickler(self.columns, 'finalColumns')
         # print(temp_df.columns)
         return temp_df
     
@@ -229,7 +237,7 @@ class BuildAndTrain():
         """Calls multiple utilities and return the result dataframe"""
         # print('Executing utilities functions ....')
         # temp_df = self.classer(temp_df)
-        temp_df = self.classes_maker(temp_df)
+        # temp_df = self.classes_maker(temp_df)
         # self.all_occupations_in_a_location(temp_df)
         # self.occs_splitter(temp_df)
         # self.sparser()
@@ -284,7 +292,6 @@ class BuildAndTrain():
         neigh = NearestNeighbors(n_neighbors=15)
         neigh.fit(clusteredSparse)
         # print('Applying nearest neighbour')
-        print("Total time: ", datetime.now() - self.start_time)
         self.recommendedNeighbours = neigh.kneighbors(np.array(userQuery).reshape(1,-1))
         self.indexes =  KMeanClusterIndexes
         return self.finalPresentation(service)
@@ -293,7 +300,9 @@ class BuildAndTrain():
         """Decodes the normalized labels into original labels"""
         print(len(self.columns), len(self.labelObject))
         for le, col in zip(self.labelObject, self.columns):
+            warnings.filterwarnings(action='ignore', category=DeprecationWarning)            
             df[col] = le.inverse_transform(df[col])
+        print("Total time: ", datetime.now() - self.start_time)
         return df
 
     def finalPresentation(self, service):
