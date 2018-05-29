@@ -5,43 +5,47 @@
     <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Recommendation</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous"> -->
+    <!-- <link rel="stylesheet" href="{%static 'mainapp/css/w3.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'main_app/css/bootstrap.min.css' %}">
   </head>
   <body>
     {% block nav %}
     <header>
-      <!-- <nav class="navbar navbar-expand-sm navbar-light" style="background-color:rgb(220, 233, 139)">
-        <ul class="navbar-nav " style="padding-right: 25%; padding-left:30%;">
-          <li classHome="nav-item active" style="padding-right: 20%">
+      <nav class="navbar navbar-expand-sm justify-content-center bg-dark navbar-dark fixed-top">
+        <ul class="navbar-nav active">
+          <li classHome="nav-item" >
             <a class="nav-link" href="{% url 'index' %}">Home</a>
           </li>
-          <li class="nav-item" style="padding-right: 20%; padding-left:30%;">
+          <li class="nav-item" >
             <a class="nav-link" href="{% url 'help' %}">Help</a>
           </li>
-          <li class="nav-item" style="padding-right: 20%; padding-left:30%;">
+          <li class="nav-item" >
             <a class="nav-link" href="{% url 'query' %}">Query</a>
           </li>
         </ul>
-      </nav> -->
-      <div class="w3-bar w3-black w3-container w3-large">
+      </nav>
+      <!-- <div class="w3-bar w3-black w3-container w3-large">
         <a class="w3-bar-item w3-button" href="{% url 'index' %}" style="width:33%">
           <i class="fa fa-home"></i> Home</a>
         <a class="w3-bar-item w3-button" href="{% url 'help' %}" style="width:33%">Help</a>
         <a class="w3-bar-item w3-button" href="{% url 'query' %}" style="width:33%">
           <i class="fa fa-search"></i> Query</a>
-      </div>
+      </div> -->
     </header>
     {% endblock %}
 
   {% block content %}
 
   {% endblock %}
-  <footer class="w3-wide w3-container w3-teal w3-large" style="color: rgb(57, 83, 57); padding: 10px; text-align: center">
+  <!-- <footer class="w3-wide w3-container w3-teal w3-large" style="color: rgb(57, 83, 57); padding: 10px; text-align: center">
     Made by Rajkumar Gosavi with <span class="fa fa-heart-o"></span>
     <span class="fa fa-headphones"></span> and
     <span class="fa fa-coffee"></span>
-  </footer>
+  </footer> -->
+  <div class="">
+  <footer class="page-footer font-small blue pt-4 mt-4" style="background: gray">BE PROJECT 2018 RECOMMENDER SYSTEM</footer>
+</div>
   </body>
 </html>

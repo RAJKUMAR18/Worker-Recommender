@@ -7,4 +7,5 @@ urlpatterns = [
     , path('query/', views.query, name='query')
     , path('result/', views.result, name='result')
     , path('help/', views.help, name='help')
+    , path('detail/<int:wid>/', views.detail, name='worker-detail')
     ]

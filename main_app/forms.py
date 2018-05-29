@@ -55,9 +55,7 @@ class Query(forms.Form):
                                 max_length=12,
                                 widget=forms.TextInput(
                                     attrs={
-                                        'class': 'w3-input \
-                                        w3-border-blue w3-light-grey\
-                                        w3-leftbar'
+                                        'class': 'form-control input-sm'
                                         }))
 
     mob_number = forms.CharField(label='Mobile Number',
@@ -65,17 +63,14 @@ class Query(forms.Form):
                                  max_length=10,
                                  widget=forms.TextInput(
                                      attrs={
-                                         'class': 'w3-input\
-                                         w3-border-blue w3-light-grey\
-                                         w3-leftbar'
+                                         'class': 'form-control input-sm'
                                          }))
 
     location = forms.ChoiceField(label='Location',
                                  choices=LOCATIONS,
                                  widget=forms.Select(
                                      attrs={
-                                         'class': 'w3-container\
-                                          w3-dropdown-click'
+                                         'class': 'dropdown'
                                      }
                                  ),
                                  initial=0)
@@ -84,25 +79,36 @@ class Query(forms.Form):
                                 choices=OCCUPATIONS,
                                 widget=forms.Select(
                                     attrs={
-                                        'class': 'w3-container w3-cell\
-                                         w3-dropdown-click',
+                                        'class': 'dropdown',
                                     }
                                 ),
                                 initial=0)
 
     doorstep_service = forms.ChoiceField(label='Door Step',
                                          choices=DOORSTEP,
-                                         widget=forms.RadioSelect(),
-                                         initial=0)
+                                         widget=forms.RadioSelect(
+                                             attrs={
+                                                 'class': 'radio-inline',
+                                             }
+                                         ),
+                                         initial=0,)
 
     age_prefernce = forms.ChoiceField(label='Age',
                                       choices=AGES,
-                                      widget=forms.RadioSelect(),
+                                      widget=forms.RadioSelect(
+                                          attrs={
+                                              'class': 'radio-inline',
+                                          }
+                                      ),
                                       initial=0)
 
     availability = forms.ChoiceField(label='Availability',
                                      choices=AVAIL,
-                                     widget=forms.RadioSelect(),
+                                     widget=forms.RadioSelect(
+                                        attrs={
+                                              'class': 'radio-inline',
+                                        }
+                                     ),
                                      required=True,
                                      initial=0)
 

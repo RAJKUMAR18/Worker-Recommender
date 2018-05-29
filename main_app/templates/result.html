@@ -1,32 +1,38 @@
 {% extends "base.html" %}
 {% load static %}
 
-<h1>Result</h1>
-<h3>Your Query was:</h3>
-{% block content %}
-name {{ name }}<br/>
-mob_number {{ mob_number }}<br/>
 
-location {{ location }}<br/>
-service {{ service }}<br/>
-Certifications {{ certification }}<br/>
-age_prefernce {{ age_prefernce }}<br/>
-Gender {{ gender }}<br/>
-Type {{ types }}<br/>
-availability {{ availability}}<br/>
-Wage Preference {{ wage_preference }}<br/>
-experience {{ experience }}<br/>
-clients_attended {{ clients_attended }}<br/>
-doorstep_service {{ doorstep_service }}<br/>
-refernence {{ reference}}<br/>
-liscenced {{ liscenced }}<br/>
-Shop_liscence {{ shopping_liscence }}<br/>
+{% block content %}
+<h1 style="padding-top: 65px">Result</h1>
+<h3>Your Query was:</h3>
+<ul class="list-group bg-info">
+    <li class="list-group-item border"><span class="border">Name: {{ uname }}</span>  <span class="border">Mobile Number: {{ mob_number }}</span></li>
+    <li class="list-group-item border"><span class="border">Location: {{ location }}</span>   <span class="border">Service: {{ service }}</span></li>
+    <li class="list-group-item border"><span class="border">Certifications: {{ certification }}</span>   <span class="border">AgePreference: {{ age_prefernce }}</span></li>
+    <li class="list-group-item border"><span class="border">Gender: {{ gender }}</span>    <span class="border">Type: {{ types }}</span></li>
+    <li class="list-group-item border"><span class="border">Availability: {{ availability}}</span>    <span class="border">Wage Preference: {{ wage_preference }}</span></li>
+    <li class="list-group-item border"><span class="border">Experience {{ experience }}</span>    <span class="border">Clients Attended: {{ clients_attended }}</span></li>
+    <li class="list-group-item border"><span class="border">Doorstep Service {{ doorstep_service }}</span>    <span class="border">Refernence: {{ reference}}</span></li>
+    <li class="list-group-item border"><span class="border">Liscenced: {{ liscenced }}</span>   <span class="border">Shop Liscence: {{ shopping_liscence }}</span></li>
+</ul>
 
 {% autoescape off %}
-    {{ clusterDF }}
+    <div class="card-columns">
+    {% for entry in zipped %}
+        <div class="card" style="width:400px">
+            {% if entry.4 == 'Male'%}
+                <img class="card-img-top" src="{% static 'main_app/images/male.png' %}" alt="Card image" style="width:100%">
+            {% else %}
+                <img class="card-img-top" src="{% static 'main_app/images/female.png' %}" alt="Card image" style="width:100%">
+            {% endif %}
+            <div class="card-body">
+            <h4 class="card-title">{{ entry.0}}</h4>
+            <p class="card-text">Contact-No: {{ entry.1 }} Location: {{entry.2}}  Service: {{ entry.3 }} Gender: {{entry.4}}</p>
+            <a href="{% url 'worker-detail' entry.5 %}" class="btn btn-primary">See Profile</a>
+            </div>
+        </div>
+    {%endfor%}
+    </div>
 {% endautoescape %}
-
-<br>
 {{ formerror }}
-
 {% endblock %}

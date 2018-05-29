@@ -66,7 +66,7 @@ def vectorizer(columnsValues):
     vector.extend(liscenced)
     vector.extend(shoppingliscence)
 
-    print(len(vector), vector)
+    # print(len(vector), vector)
     return list(vector)
 
 
@@ -75,6 +75,7 @@ class BuildAndTrain():
     def __init__(self):
         """Calls dataUtility utitlities functions"""
         # ---- Initializing variables ----
+        pd.set_option('mode.chained_assignment', None)
         self.indexes = None
         self.recommendedNeighbours = None
         self.columns = None
@@ -85,9 +86,10 @@ class BuildAndTrain():
         self.kmeans = []
         self.start_time = datetime.now()
         # --- Calling methods and functions ---
-        self.df = self.utilities(self.df)
-        # print('utilities called!!')
-        # self.kneighborsOfUserQuery, self.finalCluster = self.KmeanPredictor('1', sparse1[116])
+        # self.df.rename({'doorstepService': 'doorstepService '}, axis=1, inplace=True)
+        # print(self.df.columns)
+        # self.df = self.utilities(self.df)
+        print('utilities called!!')
         self.classesOfColumns = self.unpickleLoader('clsofclos')
         self.occupations = self.unpickleLoader('occupations')
         self.labelObject = self.unpickleLoader('labelEncoders')
@@ -108,10 +110,11 @@ class BuildAndTrain():
     
     def dataUtility(self):
         """Reads the main input csv in a dataframe for computation"""
-        df = pd.read_csv('resources/final_data.csv')
-        df = df.drop(['id', 'availabilityPreference', 'aadharCard'],
+        df = pd.read_csv('resources/final_data2.csv')
+        df = df.drop(['availabilityPreference', 'aadharCard'],
                      axis=1)
         df.dropna(inplace=True)
+        # print(df.columns)
         # print('DataUtility Done')
         return df
 
@@ -141,8 +144,10 @@ class BuildAndTrain():
         """Label encoding for all non numeric data and returns new df"""
         temp = temp_df.columns.tolist()
         temp.remove('phoneNo')
+        temp.remove('name')
+
         self.columns = temp
-        # print(self.columns)
+        print(self.columns)
         for i in temp:
             warnings.filterwarnings(action='ignore', category=DeprecationWarning)            
             le = preprocessing.LabelEncoder()
@@ -152,13 +157,16 @@ class BuildAndTrain():
             self.labelObject.append(le)
         self.pickler(self.labelObject, 'labelEncoders')
         self.pickler(self.columns, 'finalColumns')
+        # print("classesmaker")
         # print(temp_df.columns)
         return temp_df
     
     def all_occupations_in_a_location(self, temp_df):
         """Finds all the workers at all locations and store it in dict with key as\
         occupation and value as list of indexes"""
-        # print('Sorting workers')
+        print('Sorting workers')
+        # print("occloc")
+        # print(temp_df.columns)
         for index, row in temp_df.iterrows():
             self.occupations[row['occupation']].append(index)
 
@@ -170,11 +178,13 @@ class BuildAndTrain():
     def occs_splitter(self, df):
         """Splits data into multiple datasets w.r.t occupation and stores it in a  seperate\
             csv file"""
-        # print('Splitting data.....')
+        print('Splitting data.....')
         for key in self.occupations.keys():
-            temp_df = df.iloc[self.occupations[key]]
+            temp_df = df.loc[self.occupations[key]]
             # temp_df.loc[:, ~df.columns.str.contains('^Unnamed')]
-            temp_df.to_csv(str(key) + '.csv', index=False)
+            # print("occsplit")
+            # print(temp_df.columns)
+            temp_df.to_csv('resources/'+str(key) + '.csv', index=False)
     
     
     def sparser(self):
@@ -236,16 +246,16 @@ class BuildAndTrain():
     def utilities(self, temp_df):
         """Calls multiple utilities and return the result dataframe"""
         print('Executing utilities functions ....')
-        # temp_df = self.classer(temp_df)
-        # temp_df = self.classes_maker(temp_df)
-        # self.all_occupations_in_a_location(temp_df)
-        # self.occs_splitter(temp_df)
-        # self.sparser()
+        temp_df = self.classer(temp_df)
+        temp_df = self.classes_maker(temp_df)
+        self.all_occupations_in_a_location(temp_df)
+        self.occs_splitter(temp_df)
+        self.sparser()
         # self.pickler(self.classesOfColumns, 'clsofclos')
-        # self.pickler(self.occupations, 'occupations')
+        self.pickler(self.occupations, 'occupations')
         print("Utilites executed")
         return temp_df
-    
+
     def modelling(self, service, userquery):
         """Creates a Kmean model and starts ml processes in cascade"""
         # print('Generating model ...')
@@ -254,7 +264,7 @@ class BuildAndTrain():
             temp_files.append(self.unpickleLoader(str(i)+'_sparse'))
             kmodel = KMeans(max_iter=4,
                             n_clusters=10, n_init=10).fit(temp_files[i])
-            self.kmeans.append(kmodel)
+            # self.kmeans.append(kmodel)
             self.pickler(kmodel, str(i) + '_model')
         # print('Modelling done')
         return self.KmeanPredictor(service, userquery)
@@ -294,35 +304,43 @@ class BuildAndTrain():
         # print('Applying nearest neighbour')
         self.recommendedNeighbours = neigh.kneighbors(np.array(userQuery).reshape(1,-1))
         self.indexes =  KMeanClusterIndexes
+        # print(self.indexes.iloc[self.recommendedNeighbours[1][0]])
         return self.finalPresentation(service)
 
     def classDecoder(self, df):
         """Decodes the normalized labels into original labels"""
-        print(len(self.columns), len(self.labelObject))
+        # print(len(self.columns), len(self.labelObject))
         for le, col in zip(self.labelObject, self.columns):
             warnings.filterwarnings(action='ignore', category=DeprecationWarning)            
             df[col] = le.inverse_transform(df[col])
+        df.loc[df['age']==0, 'age'] = '18 - 20'
+        df.loc[df['age']==1, 'age'] = '21 - 25'
+        df.loc[df['age']==2, 'age'] = '26 - 30'
+        df.loc[df['age']==3, 'age'] = '30 + '
+
+        df.loc[df['minimumWage']==0, 'minimumWage'] = '1000 - 5000'
+        df.loc[df['minimumWage']==1, 'minimumWage'] = '5000 - 8000'
+        df.loc[df['minimumWage']==2, 'minimumWage'] = '8000 + '
+        
+
+        df.loc[df['experience']==0, 'experience'] = '0-3'
+        df.loc[df['experience']==1, 'experience'] = '4-6'
+        df.loc[df['experience']==2, 'experience'] = '7 +'
+
+        df.loc[df['clientsAttended']==0, 'clientsAttended'] = '0 - 10'
+        df.loc[df['clientsAttended']==1, 'clientsAttended'] = '11 - 20'
+        df.loc[df['clientsAttended']==2, 'clientsAttended'] = '21 - 30'
+        df.loc[df['clientsAttended']==3, 'clientsAttended'] = '31 - 40'
+        df.loc[df['clientsAttended']==4, 'clientsAttended'] = '41 + '
+
         print("Total time: ", datetime.now() - self.start_time)
         return df
 
     def finalPresentation(self, service):
         temp_df = pd.read_csv('resources/' + str(service) + '.csv')
-        combined = temp_df.append(self.indexes.iloc[self.recommendedNeighbours[1][0]])
-        combined[~combined.index.duplicated(keep=False)]
-        final = self.indexes.iloc[self.recommendedNeighbours[1][0]].append(combined)
-        return self.classDecoder(final)
-
-# kmeans = []
-# if __name__ == '__main__':
-#     bnt = BuildAndTrain()
-
-#     df = bnt.dataUtility()
-#     classesOfColumns = defaultdict(list)
-#     occupations = defaultdict(list)
-
-# #     pickler(classesOfColumns, 'clsofclos')
-# #     pickler(occupations, 'occupations')
-#     df = bnt.utilities(df)
-#     # sparse1 = bnt.unpickleLoader('1_sparse')
-#     kneighborsOfUserQuery, finalCluster = bnt.modelling('1', sparse1[116])
-#     print(kneighborsOfUserQuery, finalCluster)
+        combined = temp_df.iloc[self.recommendedNeighbours[1][0]]
+        # print(self.recommendedNeighbours)
+        # combined.append(temp_df)
+        # combined[~combined.index.duplicated(keep=False)]
+        # final = self.indexes.iloc[self.recommendedNeighbours[1][0]].append(combined)
+        return self.classDecoder(combined)

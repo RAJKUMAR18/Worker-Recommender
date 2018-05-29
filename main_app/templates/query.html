@@ -5,7 +5,11 @@
 {% crispy form form.helper %}
 
 {% block content %}
-  <form method="post" action="/result/" class="form-horizontal">
-    {% crispy form %}
+<div class="center container" style="padding-top: 60px">
+  <form method="post" action="/result/" class="">
+    <div class="form-group">
+      {% crispy form %}
+    </div>
+</div>
   </form>
 {% endblock %}
