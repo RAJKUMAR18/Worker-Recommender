@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="container" style="padding-top: 65px">
+    <div class="jumbotron border border-0">
+        <ul class="list-group">
+            {% if gender == 'Female' %}
+                <img src="{% static 'main_app/images/female.png' %}" class="img img-thumbnail" alt="">        
+            {% else %}
+            <img src="{% static 'main_app/images/male.png' %}" class="img img-thumbnail" alt="">
+            {% endif %}
+            <li class="list-group-item"> name {{ name }}</li>
+            <li class="list-group-item">phoneNo {{ phoneNo }}</li>
+            <li class="list-group-item">location {{ location }}</li>
+            <li class="list-group-item">occupation {{ occupation }}</li>
+            <li class="list-group-item">certification {{ certification }}</li>
+            <li class="list-group-item">age {{ age }}</li>
+            <li class="list-group-item">gender {{ gender }}</li>
+            <li class="list-group-item">type {{ type }}</li>
+            <li class="list-group-item">availability {{ availability }}</li>
+            <li class="list-group-item">minimumWage {{ minimumWage }}</li>
+            <li class="list-group-item">experience {{ experience }}</li>
+            <li class="list-group-item">clientsAttended {{ clientsAttended }}</li>
+            <li class="list-group-item">doorstepService {{ doorstepService }}</li>
+            <li class="list-group-item">references {{ references }}</li>
+            <li class="list-group-item">liscenced {{ liscenced }}</li>
+            <li class="list-group-item">shoppingliscence {{ shoppingliscence }}</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
