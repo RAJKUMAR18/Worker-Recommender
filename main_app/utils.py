@@ -147,7 +147,7 @@ class BuildAndTrain():
         temp.remove('name')
 
         self.columns = temp
-        print(self.columns)
+        # print(self.columns)
         for i in temp:
             warnings.filterwarnings(action='ignore', category=DeprecationWarning)            
             le = preprocessing.LabelEncoder()
@@ -246,13 +246,13 @@ class BuildAndTrain():
     def utilities(self, temp_df):
         """Calls multiple utilities and return the result dataframe"""
         print('Executing utilities functions ....')
-        temp_df = self.classer(temp_df)
-        temp_df = self.classes_maker(temp_df)
-        self.all_occupations_in_a_location(temp_df)
-        self.occs_splitter(temp_df)
-        self.sparser()
-        # self.pickler(self.classesOfColumns, 'clsofclos')
-        self.pickler(self.occupations, 'occupations')
+        # temp_df = self.classer(temp_df)
+        # temp_df = self.classes_maker(temp_df)
+        # self.all_occupations_in_a_location(temp_df)
+        # self.occs_splitter(temp_df)
+        # self.sparser()
+        # # self.pickler(self.classesOfColumns, 'clsofclos')
+        # self.pickler(self.occupations, 'occupations')
         print("Utilites executed")
         return temp_df
 
