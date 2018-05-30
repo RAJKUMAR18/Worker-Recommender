@@ -265,7 +265,7 @@ class BuildAndTrain():
             kmodel = KMeans(max_iter=4,
                             n_clusters=10, n_init=10).fit(temp_files[i])
             # self.kmeans.append(kmodel)
-            self.pickler(kmodel, str(i) + '_model')
+            # self.pickler(kmodel, str(i) + '_model')
         # print('Modelling done')
         return self.KmeanPredictor(service, userquery)
     
