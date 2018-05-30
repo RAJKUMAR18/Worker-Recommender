@@ -126,8 +126,11 @@ def result(request):
             genders = finalCluster['gender'].values.tolist()
             context['zipped'] = zip(context['name'], context['phoneNo'], context['wlocation'], context['woccupation'], genders, context['clusterDF'].index.tolist())
             # print(finalCluster)
-            for k,v in context.items():
-                global_context[k] = v
+            # for k,v in context.items():
+            #     global_context[k] = v
+            global global_context
+            global_context = context.copy()
+            # print(global_context)
             return render(request, 'result.html', {str(k):v for k,v in context.items()})
             # return render(request, 'result.html', {'contacts': contacts})
         else:
@@ -139,6 +142,8 @@ def detail(request, wid):
     # print(type(request))
     # print(global_context)
     # print(type(global_context['clusterDF']))
+    global global_context
+    print(global_context.keys())
     workerInstance = global_context['clusterDF'].loc[int(wid)]
     workerInstance = workerInstance.to_dict()
     # print(workerInstance)
