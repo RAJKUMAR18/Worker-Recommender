@@ -9,6 +9,54 @@
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous"> -->
     <!-- <link rel="stylesheet" href="{%static 'mainapp/css/w3.css' %}"> -->
     <link rel="stylesheet" href="{% static 'main_app/css/bootstrap.min.css' %}">
+    <style>
+      body {
+        font-family: "Lato", sans-serif;
+    }
+
+    .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #555;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+        text-align:center;
+    }
+
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+
+    }
+
+    .sidenav a:hover{
+        color: #f1f1f1;
+    }
+
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+        color: black;
+    }
+
+    @media screen and (max-height: 450px) {
+      .sidenav {padding-top: 15px;}
+      .sidenav a {font-size: 18px;}
+    }
+  </style>
+  
   </head>
   <body>
     {% block nav %}
@@ -45,7 +93,30 @@
     <span class="fa fa-coffee"></span>
   </footer> -->
   <div class="">
-  <footer class="page-footer font-small blue pt-4 mt-4" style="background: gray">BE PROJECT 2018 RECOMMENDER SYSTEM</footer>
+  <footer class="page-footer font-small blue pt-4 mt-4" style="background:aqua">
+      <div class="row">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-4"><h5>BE PROJECT 2018 RECOMMENDER SYSTEM</h5></div>
+          <div class="col-sm-2"></div>
+        </div> 
+      <span class="text-center"></span>
+    <div class="row">
+        <div class="col-sm-2"><a href="{% url 'index' %}" style="color: rgb(0, 0, 0)"><h4>Home</h4></a></div>
+        <div class="col-sm-2"><a href="{% url 'help' %}" style="color: rgb(0, 0, 0)"><h4>Help</h4></a></div>
+        <div class="col-sm-2"><a href="{% url 'query' %}" style="color: rgb(0, 0, 0)"><h4>Query Form</h4></a></div>
+      </div> 
+  </footer>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+  function openNav(wid) {
+      document.getElementById(wid).style.width = "100%";
+  }
+
+  function closeNav(wid) {
+      document.getElementById(wid).style.width = "0";
+  }
+</script>
   </body>
 </html>

@@ -6,15 +6,49 @@
 <h1 style="padding-top: 65px">Result</h1>
 <h3>Your Query was:</h3>
 <div class="jumbotron">
-    <ul class="list-group bg-info">
-        <li class="list-group-item border"><span class="border">Name: {{ uname }}</span>  <span class="border">Mobile Number: {{ mob_number }}</span></li>
-        <li class="list-group-item border"><span class="border">Location: {{ location }}</span>   <span class="border">Service: {{ service }}</span></li>
-        <li class="list-group-item border"><span class="border">Certifications: {{ certification }}</span>   <span class="border">AgePreference: {{ age_prefernce }}</span></li>
-        <li class="list-group-item border"><span class="border">Gender: {{ gender }}</span>    <span class="border">Type: {{ types }}</span></li>
-        <li class="list-group-item border"><span class="border">Availability: {{ availability}}</span>    <span class="border">Wage Preference: {{ wage_preference }}</span></li>
-        <li class="list-group-item border"><span class="border">Experience {{ experience }}</span>    <span class="border">Clients Attended: {{ clients_attended }}</span></li>
-        <li class="list-group-item border"><span class="border">Doorstep Service {{ doorstep_service }}</span>    <span class="border">Refernence: {{ reference}}</span></li>
-        <li class="list-group-item border"><span class="border">Liscenced: {{ liscenced }}</span>   <span class="border">Shop Liscence: {{ shopping_liscence }}</span></li>
+    <ul class="list-group ">
+            <div class="container">
+                    <table class="table table-striped table-dark">
+                      <thead>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Name: {{ uname }}</td>
+                          <td>Mobile Number: {{ mob_number }}</td>
+                          <td>Location: {{ location }}</td>
+                        </tr>
+                        <tr>
+                          <td>Service: {{ service }}</td>
+                          <td>Certifications: {{ certification }}</td>
+                          <td>AgePreference: {{ age_prefernce }}</td>
+                        </tr>
+                        <tr>
+                          <td>Gender: {{ gender }}</td>
+                          <td>Type: {{ types }}</td>
+                          <td>Availability: {{ availability}}</td>
+                        </tr>
+                        <tr>
+                            <td>Wage Preference: {{ wage_preference }}</td>
+                            <td>Experience {{ experience }}</td>
+                            <td>Clients Attended: {{ clients_attended }}</td>
+                        </tr>
+                        <tr>
+                            <td>Doorstep Service {{ doorstep_service }}</td>
+                            <td>Refernence: {{ reference}}</td>
+                            <td>Liscenced: {{ liscenced }}</td>
+                            <td>Shop Liscence: {{ shopping_liscence }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>                  
+        <!-- <li class="list-group-item border"><span class="border"></span>  <span class="border text-right"></span></li>
+        <li class="list-group-item border"><span class="border"></span>   <span class="border"></span></li>
+        <li class="list-group-item border"><span class="border"></span>   <span class="border"></span></li>
+        <li class="list-group-item border"><span class="border"></span>    <span class="border"></span></li>
+        <li class="list-group-item border"><span class="border"></span>    <span class="border"></span></li>
+        <li class="list-group-item border"><span class="border"></span>    <span class="border"></span></li>
+        <li class="list-group-item border"><span class="border"></span>    <span class="border"></span></li>
+        <li class="list-group-item border"><span class="border"></span>   <span class="border"></span></li> -->
     </ul>
 </div>
 
@@ -22,16 +56,39 @@
     <div class="card-columns">
     {% for entry in zipped %}
         <div class="card" style="width:400px">
-            {% if entry.4 == 'Male'%}
-                <img class="card-img-top" src="{% static 'main_app/images/male.png' %}" alt="Card image" style="width:100%">
-            {% else %}
-                <img class="card-img-top" src="{% static 'main_app/images/female.png' %}" alt="Card image" style="width:100%">
-            {% endif %}
-            <div class="card-body">
-                <h4 class="card-title">{{ entry.0}}</h4>
-                <p class="card-text">Contact-No: {{ entry.1 }} Location: {{entry.2}}  Service: {{ entry.3 }} Gender: {{entry.4}}</p>
-                <a href="{% url 'worker-detail' entry.5 %}" class="btn btn-primary">See Profile</a>
-            </div>
+                {% if entry.4 == 'Male'%}
+                    <img class="card-img-top" src="{% static 'main_app/images/male.png' %}" alt="Card image" style="width:100%; height:50%">
+                {% else %}
+                    <img class="card-img-top" src="{% static 'main_app/images/female.png' %}" alt="Card image" style="width:100%; height:50%">
+                {% endif %}
+                <div class="card-body">                           
+                    <h4 class="card-title">{{ entry.0}}</h4>
+                    <p class="card-text">Contact-No: {{ entry.1 }} Location: {{entry.2}}  Service: {{ entry.3 }} Gender: {{entry.4}}</p>
+                    
+                    <!-- <a href="{% url 'worker-detail' entry.5 %}" class="btn btn-primary">See Profile</a> -->
+                    <div id={{entry.1}} class="sidenav">
+                            <div class="container" style="padding-top: 65px">
+                                    <div class="jumbotron border border-0">
+                                        <ul class="list-group">
+                                            {% if entry.4 == 'Male' %}
+                                            <img class="card-img-top" src="{% static 'main_app/images/male.png' %}" alt="Card image">        
+                                            {% else %}
+                                            <img class="card-img-top" src="{% static 'main_app/images/female.png' %}" alt="Card image">
+                                            {% endif %}
+                                            <li class="list-group-item"> name {{ entry.0 }}</li>
+                                            <li class="list-group-item">phoneNo {{ entry.1 }}</li>
+                                            <li class="list-group-item">location {{ entry.2 }}</li>
+                                            <li class="list-group-item">occupation {{ entry.3 }}</li>
+                                            <li class="list-group-item">gender {{ entry.4 }}</li>
+                                            <li class="list-group-item">experience {{ entry.6 }}</li>
+                                            <li class="list-group-item">minimumWage {{ entry.7 }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            <a href="javascript:void(0)" class="closebtn" onclick="closeNav({{entry.1}})" style="padding-top: 65px">&times;</a>
+                    </div>
+                    <span style="font-size:30px;cursor:pointer" onclick="openNav({{entry.1}})">&#9776; See Details</span>
+                </div>
         </div>
     {%endfor%}
     </div>

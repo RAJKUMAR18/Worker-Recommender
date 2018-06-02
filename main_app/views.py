@@ -123,8 +123,10 @@ def result(request):
             context['name'] = finalCluster['name'].values.tolist()
             context['wlocation'] = finalCluster['location'].values.tolist()
             context['woccupation'] = finalCluster['occupation'].values.tolist()
+            context['wexp'] = finalCluster['experience'].values.tolist()
+            context['wminimumWage'] = finalCluster['minimumWage'].values.tolist()
             genders = finalCluster['gender'].values.tolist()
-            context['zipped'] = zip(context['name'], context['phoneNo'], context['wlocation'], context['woccupation'], genders, context['clusterDF'].index.tolist())
+            context['zipped'] = zip(context['name'], context['phoneNo'], context['wlocation'], context['woccupation'], genders, context['clusterDF'].index.tolist(), context['wexp'], context['wminimumWage'])
             # print(finalCluster)
             # for k,v in context.items():
             #     global_context[k] = v
